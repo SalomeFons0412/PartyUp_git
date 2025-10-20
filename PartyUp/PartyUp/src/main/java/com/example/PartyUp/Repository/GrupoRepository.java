@@ -1,0 +1,4 @@
+@Repository
+public class GrupoRepository {
+    
+}
