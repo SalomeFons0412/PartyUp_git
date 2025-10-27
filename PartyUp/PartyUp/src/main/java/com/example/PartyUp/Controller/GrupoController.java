@@ -1,3 +1,10 @@
+package com.example.PartyUp.controller;
+import com.example.PartyUp.model.entity.Grupo;
+import com.example.PartyUp.service.GrupoService;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.ResponseEntity;
+import org.springframework.web.bind.annotation.*;
+
 @RestController
 @RequestMapping("/grupos")
 public class GrupoController {

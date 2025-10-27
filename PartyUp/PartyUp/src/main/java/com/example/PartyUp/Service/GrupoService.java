@@ -1,3 +1,11 @@
+package com.example.PartyUp.service;
+
+import com.example.PartyUp.model.entity.Grupo;
+import com.example.PartyUp.repository.GrupoRepository;
+import com.example.PartyUp.repository.UsuarioRepository;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Service;
+
 @Service
 public class GrupoService {
 
@@ -9,15 +17,12 @@ public class GrupoService {
 
     // Crear grupo
     public Grupo crearGrupo(String creadorId, String nombre, String descripcion) {
-        Usuario creador = usuarioRepository.findById(creadorId)
+        // Verificar que el creador exista
+        usuarioRepository.findById(creadorId)
                 .orElseThrow(() -> new RuntimeException("Usuario no encontrado"));
 
-        Grupo grupo = new Grupo();
-        grupo.setNombre(nombre);
-        grupo.setDescripcion(descripcion);
-        grupo.setCreador(creador);
-        grupo.agregarMiembro(creador); // el creador también es miembro
-
+        // Crear grupo
+        Grupo grupo = new Grupo(nombre, descripcion, creadorId);
         return grupoRepository.save(grupo);
     }
 
@@ -26,10 +31,10 @@ public class GrupoService {
         Grupo grupo = grupoRepository.findById(grupoId)
                 .orElseThrow(() -> new RuntimeException("Grupo no encontrado"));
 
-        Usuario usuario = usuarioRepository.findById(usuarioId)
+        usuarioRepository.findById(usuarioId)
                 .orElseThrow(() -> new RuntimeException("Usuario no encontrado"));
 
-        grupo.agregarMiembro(usuario);
+        grupo.agregarMiembro(usuarioId);
         return grupoRepository.save(grupo);
     }
 
@@ -38,10 +43,10 @@ public class GrupoService {
         Grupo grupo = grupoRepository.findById(grupoId)
                 .orElseThrow(() -> new RuntimeException("Grupo no encontrado"));
 
-        Usuario usuario = usuarioRepository.findById(usuarioId)
+        usuarioRepository.findById(usuarioId)
                 .orElseThrow(() -> new RuntimeException("Usuario no encontrado"));
 
-        grupo.expulsarMiembro(usuario);
+        grupo.expulsarMiembro(usuarioId);
         return grupoRepository.save(grupo);
     }
 
@@ -50,10 +55,10 @@ public class GrupoService {
         Grupo grupo = grupoRepository.findById(grupoId)
                 .orElseThrow(() -> new RuntimeException("Grupo no encontrado"));
 
-        Usuario usuario = usuarioRepository.findById(usuarioId)
+        usuarioRepository.findById(usuarioId)
                 .orElseThrow(() -> new RuntimeException("Usuario no encontrado"));
 
-        grupo.expulsarMiembro(usuario);
+        grupo.expulsarMiembro(usuarioId);
         grupoRepository.save(grupo);
     }
 

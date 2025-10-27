@@ -1,55 +1,48 @@
-package com.example.PartyUp.Model.Entity;
+package com.example.PartyUp.model.entity;
 
-import jakarta.persistence.*;
+import org.springframework.data.annotation.Id;
+import org.springframework.data.mongodb.core.mapping.Document;
 import java.util.ArrayList;
 import java.util.List;
 
-@Entity
-@Table(name = "grupo")
+@Document(collection = "grupos")
 public class Grupo {
 
     @Id
-    @GeneratedValue(strategy = GenerationType.UUID)
     private String id;
 
     private String nombre;
     private String descripcion;
 
-    @ManyToOne
-    @JoinColumn(name = "creador_id")
-    private Usuario creador;
+    // Referencia al creador (guardaremos el ID del usuario)
+    private String creadorId;
 
-    @ManyToMany
-    @JoinTable(
-        name = "grupo_miembros",
-        joinColumns = @JoinColumn(name = "grupo_id"),
-        inverseJoinColumns = @JoinColumn(name = "usuario_id")
-    )
-    private List<Usuario> miembros = new ArrayList<>();
+    // Lista de IDs de usuarios miembros
+    private List<String> miembros = new ArrayList<>();
 
-    //Constructores
+    // Constructores
     public Grupo() {}
 
-    public Grupo(String nombre, String descripcion, Usuario creador) {
+    public Grupo(String nombre, String descripcion, String creadorId) {
         this.nombre = nombre;
         this.descripcion = descripcion;
-        this.creador = creador;
+        this.creadorId = creadorId;
         this.miembros = new ArrayList<>();
-        this.miembros.add(creador);
+        this.miembros.add(creadorId); // el creador también es miembro
     }
 
-    //Metodos
-    public void agregarMiembro(Usuario usuario) {
-        if (!miembros.contains(usuario)) {
-            miembros.add(usuario);
+    // Métodos
+    public void agregarMiembro(String usuarioId) {
+        if (!miembros.contains(usuarioId)) {
+            miembros.add(usuarioId);
         }
     }
 
-    public void expulsarMiembro(Usuario usuario) {
-        miembros.remove(usuario);
+    public void expulsarMiembro(String usuarioId) {
+        miembros.remove(usuarioId);
     }
 
-    //Getters y Setters
+    // Getters y Setters
     public String getId() {
         return id;
     }
@@ -74,20 +67,19 @@ public class Grupo {
         this.descripcion = descripcion;
     }
 
-    public Usuario getCreador() {
-        return creador;
+    public String getCreadorId() {
+        return creadorId;
     }
 
-    public void setCreador(Usuario creador) {
-        this.creador = creador;
+    public void setCreadorId(String creadorId) {
+        this.creadorId = creadorId;
     }
 
-    public List<Usuario> getMiembros() {
+    public List<String> getMiembros() {
         return miembros;
     }
 
-    public void setMiembros(List<Usuario> miembros) {
+    public void setMiembros(List<String> miembros) {
         this.miembros = miembros;
     }
-
 }

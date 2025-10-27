@@ -1,29 +1,24 @@
-package com.example.PartyUp.Service;
+package com.example.PartyUp.service;
 
-import com.example.PartyUp.Model.Entity.Usuario;
-import com.example.PartyUp.Repository.UsuarioRepository;
+import com.example.PartyUp.model.entity.Usuario;
+import com.example.PartyUp.repository.UsuarioRepository;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.stereotype.Service;
-
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
-
-import java.util.List;
-import java.util.Optional;
+import org.springframework.stereotype.Service;
 
 @Service
 public class UsuarioService {
 
     @Autowired
     private UsuarioRepository usuarioRepository;
-    //metodo para encriptar
+
     @Autowired
     private BCryptPasswordEncoder passwordEncoder;
 
     public Usuario actualizarUsuario(String id, Usuario nuevosDatos) {
         return usuarioRepository.findById(id)
                 .map(usuario -> {
-                    // Validar que los campos no estén vacíos antes de actualizar
-                    if (nuevosDatos.getNombre() != null && !nuevosDatos.getNombre().isBlank()) {
+                    if (nuevosDatos.getNombre() != null && !((String) nuevosDatos.getNombre()).isBlank()) {
                         usuario.setNombre(nuevosDatos.getNombre());
                     }
                     if (nuevosDatos.getCorreo() != null && !nuevosDatos.getCorreo().isBlank()) {
@@ -32,7 +27,6 @@ public class UsuarioService {
                     if (nuevosDatos.getTelefono() != null && !nuevosDatos.getTelefono().isBlank()) {
                         usuario.setTelefono(nuevosDatos.getTelefono());
                     }
-                    // Encriptar la contraseña antes de actualizar
                     if (nuevosDatos.getContrasena() != null && !nuevosDatos.getContrasena().isBlank()) {
                         usuario.setContrasena(passwordEncoder.encode(nuevosDatos.getContrasena()));
                     }
@@ -40,4 +34,17 @@ public class UsuarioService {
                 })
                 .orElseThrow(() -> new RuntimeException("Usuario no encontrado"));
     }
+    public Usuario crearUsuario(Usuario nuevoUsuario) {
+    // Verificar si ya existe un usuario con el mismo correo
+    if (usuarioRepository.findByCorreo(nuevoUsuario.getCorreo()).isPresent()) {
+        throw new RuntimeException("El correo ya está registrado");
+    }
+
+    // Encriptar la contraseña antes de guardar
+    nuevoUsuario.setContrasena(passwordEncoder.encode(nuevoUsuario.getContrasena()));
+
+    // Guardar usuario en la base de datos
+    return usuarioRepository.save(nuevoUsuario);
+}
+
 }
