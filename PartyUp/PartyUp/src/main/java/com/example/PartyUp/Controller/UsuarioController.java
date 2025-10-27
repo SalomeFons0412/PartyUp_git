@@ -15,11 +15,11 @@ public class UsuarioController {
 
     //Actualizar perfil de usuario
     @PutMapping("/{id}")
-    public ResponseEntity<UsuarioDTO> actualizarUsuario(
-            @PathVariable Long id,
-            @RequestBody UsuarioDTO usuarioDTO) {
+    public ResponseEntity<Usuario> actualizarUsuario(
+            @PathVariable String id,
+            @RequestBody Usuario usuario) {
 
-        UsuarioDTO actualizado = usuarioService.actualizarUsuario(id, usuarioDTO);
+        Usuario actualizado = usuarioService.actualizarUsuario(id, usuario);
         return ResponseEntity.ok(actualizado);
         }
     }
