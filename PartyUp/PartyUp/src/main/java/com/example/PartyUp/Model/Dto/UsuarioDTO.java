@@ -1,4 +1,4 @@
-package com.example.PartyUp.dto;
+package com.example.PartyUp.Model.dto;
 
 public class UsuarioDTO {
     private String id;
