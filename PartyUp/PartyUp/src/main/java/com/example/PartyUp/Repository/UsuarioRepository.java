@@ -1,6 +1,6 @@
-package com.example.PartyUp.Repository;
+package com.example.partyup.repository;
 
-import com.example.PartyUp.Model.Entity.Usuario;
+import com.example.partyup.model.entity.Usuario;
 import org.springframework.data.mongodb.repository.MongoRepository;
 import org.springframework.stereotype.Repository;
 

@@ -1,7 +1,7 @@
-package com.example.PartyUp.Service;
+package com.example.partyup.service;
 
-import com.example.PartyUp.Model.Entity.Usuario;
-import com.example.PartyUp.Repository.UsuarioRepository;
+import com.example.partyup.model.entity.Usuario;
+import com.example.partyup.repository.UsuarioRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 

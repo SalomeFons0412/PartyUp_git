@@ -1,4 +1,4 @@
-package com.example.PartyUp.Model.Dto;
+package com.example.partyup.model.dto;
 
 import java.util.List;
 

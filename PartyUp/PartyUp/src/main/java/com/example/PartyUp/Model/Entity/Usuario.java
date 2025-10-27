@@ -1,4 +1,4 @@
-package com.example.PartyUp.Model.Entity;
+package com.example.partyup.model.entity;
 
 import org.springframework.data.annotation.Id;
 import org.springframework.data.mongodb.core.mapping.Document;
