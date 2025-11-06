@@ -6,6 +6,9 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Service;
 
+import java.util.List;
+import java.util.Optional;
+
 @Service
 public class UsuarioService {
 
@@ -45,6 +48,30 @@ public class UsuarioService {
 
     // Guardar usuario en la base de datos
     return usuarioRepository.save(nuevoUsuario);
-}
+    }
+
+
+    //actualizar solo preferencias
+    public Usuario actualizarPreferencias(String usuarioId, List<String> juegos, List<String> plataformas, String horarios) {
+        Optional<Usuario> usuarioOpt = usuarioRepository.findById(usuarioId);
+        if (usuarioOpt.isPresent()) {
+            Usuario usuario = usuarioOpt.get();
+            usuario.setJuegos(juegos);
+            usuario.setPlataformas(plataformas);
+            usuario.setHorarios(horarios);
+            return usuarioRepository.save(usuario);
+        }
+        throw new RuntimeException("Usuario no encontrado");
+    }
+
+    //método para obtener usuario por ID
+    public Optional<Usuario> obtenerUsuarioPorId(String id) {
+        return usuarioRepository.findById(id);
+    }
+
+    // método para obtener todos los usuarios
+    public List<Usuario> obtenerTodosUsuarios() {
+        return usuarioRepository.findAll();
+    }
 
 }
