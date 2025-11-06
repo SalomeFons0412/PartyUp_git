@@ -37,13 +37,13 @@ public class CompatibilidadService {
                 SugerenciaDTO sugerencia = new SugerenciaDTO();
                 sugerencia.setUsuarioId(otroUsuario.getId());
                 sugerencia.setNombre(otroUsuario.getNombre());
-                sugerencia.setEmail(otroUsuario.getEmail());
+                sugerencia.setCorreo(otroUsuario.getCorreo()); 
                 sugerencia.setPorcentajeCompatibilidad(compatibilidad);
                 sugerencia.setJuegosComunes(obtenerJuegosComunes(usuarioActual.getJuegos(), otroUsuario.getJuegos()));
                 sugerencia.setPlataformasComunes(obtenerPlataformasComunes(usuarioActual.getPlataformas(), otroUsuario.getPlataformas()));
                 
                 sugerencias.add(sugerencia);
-            }ñ
+            }
         }
         
         // Ordenar por compatibilidad descendente
@@ -56,7 +56,7 @@ public class CompatibilidadService {
         double puntos = 0;
         
         // Comparar juegos (40%)
-        if (usuario1.getJuegos() != null && usuario2.getJuegos() != null) {
+        if (usuario1.getJuegos() != null && usuario2.getJuegos() != null && !usuario1.getJuegos().isEmpty() && !usuario2.getJuegos().isEmpty()) {
             Set<String> juegos1 = new HashSet<>(usuario1.getJuegos());
             Set<String> juegos2 = new HashSet<>(usuario2.getJuegos());
             double compatJuegos = calcularCoeficienteJaccard(juegos1, juegos2);
@@ -64,7 +64,7 @@ public class CompatibilidadService {
         }
         
         // Comparar plataformas (30%)
-        if (usuario1.getPlataformas() != null && usuario2.getPlataformas() != null) {
+        if (usuario1.getPlataformas() != null && usuario2.getPlataformas() != null && !usuario1.getPlataformas().isEmpty() && !usuario2.getPlataformas().isEmpty()) {
             Set<String> plataformas1 = new HashSet<>(usuario1.getPlataformas());
             Set<String> plataformas2 = new HashSet<>(usuario2.getPlataformas());
             double compatPlataformas = calcularCoeficienteJaccard(plataformas1, plataformas2);
@@ -93,8 +93,8 @@ public class CompatibilidadService {
     }
     
     private double calcularCompatibilidadHorarios(String horarios1, String horarios2) {
-        if (horarios1 == null || horarios2 == null) return 0;
-    í
+        if (horarios1 == null || horarios2 == null || horarios1.isEmpty() || horarios2.isEmpty()) return 0;
+        
         return 0.5;
     }
     

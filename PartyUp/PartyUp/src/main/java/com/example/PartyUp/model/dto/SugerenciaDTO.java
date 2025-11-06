@@ -6,7 +6,7 @@ import java.util.ArrayList;
 public class SugerenciaDTO {
     private String usuarioId;
     private String nombre;
-    private String email;
+    private String correo;  // ✅ CAMBIADO: email -> correo
     private Double porcentajeCompatibilidad;
     private List<String> juegosComunes;
     private List<String> plataformasComunes;
@@ -43,12 +43,12 @@ public class SugerenciaDTO {
         this.nombre = nombre; 
     }
     
-    public String getEmail() { 
-        return email; 
+    public String getCorreo() { 
+        return correo; 
     }
     
-    public void setEmail(String email) { 
-        this.email = email; 
+    public void setCorreo(String correo) { 
+        this.correo = correo; 
     }
     
     public Double getPorcentajeCompatibilidad() { 
