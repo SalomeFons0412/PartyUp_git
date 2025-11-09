@@ -22,4 +22,8 @@ public class Usuario {
     private List<String> juegos = new ArrayList<>();
     private List<String> plataformas = new ArrayList<>();
     private String horarios;
+
+    private String ciudad;
+    private Double latitud;
+    private Double longitud;
 }
