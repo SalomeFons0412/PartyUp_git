@@ -11,6 +11,9 @@ public class SugerenciaDTO {
     private List<String> juegosComunes;
     private List<String> plataformasComunes;
     private List<String> horariosCompatibles;
+
+    private String ciudad;
+    private double distancia;
     
     // Constructores
     public SugerenciaDTO() {
@@ -82,4 +85,10 @@ public class SugerenciaDTO {
     public void setHorariosCompatibles(List<String> horariosCompatibles) { 
         this.horariosCompatibles = horariosCompatibles; 
     }
+
+    public String getCiudad() { return ciudad; }
+    public void setCiudad(String ciudad) { this.ciudad = ciudad; }
+    
+    public double getDistancia() { return distancia; }
+    public void setDistancia(double distancia) { this.distancia = distancia; }
 }

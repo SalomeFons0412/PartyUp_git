@@ -15,7 +15,29 @@ public class CompatibilidadService {
     @Autowired
     private UsuarioRepository usuarioRepository;
 
-    
+    public boolean sonCompatibles(String usuario1Id, String usuario2Id) {
+        // Evitar que un usuario chatee consigo mismo
+        if (usuario1Id.equals(usuario2Id)) {
+            return false;
+        }
+        
+        Optional<Usuario> usuario1Opt = usuarioRepository.findById(usuario1Id);
+        Optional<Usuario> usuario2Opt = usuarioRepository.findById(usuario2Id);
+        
+        if (usuario1Opt.isEmpty() || usuario2Opt.isEmpty()) {
+            return false;
+        }
+        
+        Usuario usuario1 = usuario1Opt.get();
+        Usuario usuario2 = usuario2Opt.get();
+        
+        double compatibilidad = calcularCompatibilidad(usuario1, usuario2);
+        
+        // Definir un umbral mínimo de compatibilidad (ej: 20%)
+        double umbralMinimo = 20.0;
+        
+        return compatibilidad >= umbralMinimo;
+    }
     
     public List<SugerenciaDTO> obtenerSugerenciasCompatibles(String usuarioId) {
         Optional<Usuario> usuarioOpt = usuarioRepository.findById(usuarioId);
@@ -54,7 +76,7 @@ public class CompatibilidadService {
         return sugerencias;
     }
     
-    private Double calcularCompatibilidad(Usuario usuario1, Usuario usuario2) {
+    public double calcularCompatibilidad(Usuario usuario1, Usuario usuario2) {
         double puntos = 0;
         
         // Comparar juegos (40%)
@@ -82,6 +104,26 @@ public class CompatibilidadService {
         return Math.round(puntos * 100.0) / 100.0; // Redondear a 2 decimales
     }
     
+    public List<String> obtenerJuegosComunes(List<String> juegos1, List<String> juegos2) {
+        if (juegos1 == null || juegos2 == null) return new ArrayList<>();
+        
+        Set<String> set1 = new HashSet<>(juegos1);
+        Set<String> set2 = new HashSet<>(juegos2);
+        set1.retainAll(set2);
+        
+        return new ArrayList<>(set1);
+    }
+    
+    public List<String> obtenerPlataformasComunes(List<String> plataformas1, List<String> plataformas2) {
+        if (plataformas1 == null || plataformas2 == null) return new ArrayList<>();
+        
+        Set<String> set1 = new HashSet<>(plataformas1);
+        Set<String> set2 = new HashSet<>(plataformas2);
+        set1.retainAll(set2);
+        
+        return new ArrayList<>(set1);
+    }
+    
     private double calcularCoeficienteJaccard(Set<String> set1, Set<String> set2) {
         if (set1.isEmpty() && set2.isEmpty()) return 0;
         
@@ -99,47 +141,4 @@ public class CompatibilidadService {
         
         return 0.5;
     }
-    
-    private List<String> obtenerJuegosComunes(List<String> juegos1, List<String> juegos2) {
-        if (juegos1 == null || juegos2 == null) return new ArrayList<>();
-        
-        Set<String> set1 = new HashSet<>(juegos1);
-        Set<String> set2 = new HashSet<>(juegos2);
-        set1.retainAll(set2);
-        
-        return new ArrayList<>(set1);
-    }
-    
-    private List<String> obtenerPlataformasComunes(List<String> plataformas1, List<String> plataformas2) {
-        if (plataformas1 == null || plataformas2 == null) return new ArrayList<>();
-        
-        Set<String> set1 = new HashSet<>(plataformas1);
-        Set<String> set2 = new HashSet<>(plataformas2);
-        set1.retainAll(set2);
-        
-        return new ArrayList<>(set1);
-    }
-    public boolean sonCompatibles(String usuario1Id, String usuario2Id) {
-    // Evitar que un usuario chatee consigo mismo
-    if (usuario1Id.equals(usuario2Id)) {
-        return false;
-    }
-    
-    Optional<Usuario> usuario1Opt = usuarioRepository.findById(usuario1Id);
-    Optional<Usuario> usuario2Opt = usuarioRepository.findById(usuario2Id);
-    
-    if (usuario1Opt.isEmpty() || usuario2Opt.isEmpty()) {
-        return false;
-    }
-    
-    Usuario usuario1 = usuario1Opt.get();
-    Usuario usuario2 = usuario2Opt.get();
-    
-    double compatibilidad = calcularCompatibilidad(usuario1, usuario2);
-    
-    // Definir un umbral mínimo de compatibilidad (ej: 20%)
-    double umbralMinimo = 30.0;
-    
-    return compatibilidad >= umbralMinimo;
-}
 }
