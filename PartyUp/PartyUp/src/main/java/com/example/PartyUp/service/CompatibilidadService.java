@@ -14,6 +14,8 @@ public class CompatibilidadService {
     
     @Autowired
     private UsuarioRepository usuarioRepository;
+
+    
     
     public List<SugerenciaDTO> obtenerSugerenciasCompatibles(String usuarioId) {
         Optional<Usuario> usuarioOpt = usuarioRepository.findById(usuarioId);
@@ -117,4 +119,27 @@ public class CompatibilidadService {
         
         return new ArrayList<>(set1);
     }
+    public boolean sonCompatibles(String usuario1Id, String usuario2Id) {
+    // Evitar que un usuario chatee consigo mismo
+    if (usuario1Id.equals(usuario2Id)) {
+        return false;
+    }
+    
+    Optional<Usuario> usuario1Opt = usuarioRepository.findById(usuario1Id);
+    Optional<Usuario> usuario2Opt = usuarioRepository.findById(usuario2Id);
+    
+    if (usuario1Opt.isEmpty() || usuario2Opt.isEmpty()) {
+        return false;
+    }
+    
+    Usuario usuario1 = usuario1Opt.get();
+    Usuario usuario2 = usuario2Opt.get();
+    
+    double compatibilidad = calcularCompatibilidad(usuario1, usuario2);
+    
+    // Definir un umbral mínimo de compatibilidad (ej: 20%)
+    double umbralMinimo = 30.0;
+    
+    return compatibilidad >= umbralMinimo;
+}
 }
