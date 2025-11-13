@@ -26,4 +26,6 @@ public class Usuario {
     private String ciudad;
     private Double latitud;
     private Double longitud;
+    private boolean mostrarUbicacion = true;
+
 }

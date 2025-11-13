@@ -58,4 +58,18 @@ public class UsuarioController {
         public String getHorarios() { return horarios; }
         public void setHorarios(String horarios) { this.horarios = horarios; }
     }
+
+    //para activar/desactivar la visibilidad de la ubicación
+    @PutMapping("/{usuarioId}/ubicacion")
+    public ResponseEntity<Usuario> actualizarMostrarUbicacion(
+            @PathVariable String usuarioId,
+            @RequestParam boolean mostrar) {
+
+        try {
+            Usuario usuarioActualizado = usuarioService.actualizarMostrarUbicacion(usuarioId, mostrar);
+            return ResponseEntity.ok(usuarioActualizado);
+        } catch (RuntimeException e) {
+            return ResponseEntity.notFound().build();
+        }
+    }
 }

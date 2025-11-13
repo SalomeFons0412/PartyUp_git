@@ -16,10 +16,13 @@ public class MapService {
     private UsuarioRepository usuarioRepository;
 
     public List<UsuarioMapaDTO> obtenerUsuariosCercanos(double lat, double lon, double radiusKm) {
-        List<Usuario> usuarios = usuarioRepository.findAll();
+        // Solo obtenemos los usuarios que tienen mostrarUbicacion = true
+        List<Usuario> usuarios = usuarioRepository.findByMostrarUbicacionTrue();
         List<UsuarioMapaDTO> cercanos = new ArrayList<>();
+
         for (Usuario u : usuarios) {
             if (u.getLatitud() == null || u.getLongitud() == null) continue;
+
             double dist = distanciaKm(lat, lon, u.getLatitud(), u.getLongitud());
             if (dist <= radiusKm) {
                 UsuarioMapaDTO dto = new UsuarioMapaDTO();
@@ -35,14 +38,14 @@ public class MapService {
         return cercanos;
     }
 
-    // Fórmula de Haversine para calcular distancia entre dos coordenadas (en km)
+    // para calcular distancia entre dos coordenadas (en km)
     private double distanciaKm(double lat1, double lon1, double lat2, double lon2) {
         double radioTierra = 6371; // km
         double dLat = Math.toRadians(lat2 - lat1);
         double dLon = Math.toRadians(lon2 - lon1);
-        double a = Math.sin(dLat/2) * Math.sin(dLat/2) +
-                   Math.cos(Math.toRadians(lat1)) * Math.cos(Math.toRadians(lat2)) *
-                   Math.sin(dLon/2) * Math.sin(dLon/2);
+        double a = Math.sin(dLat / 2) * Math.sin(dLat / 2) +
+                Math.cos(Math.toRadians(lat1)) * Math.cos(Math.toRadians(lat2)) *
+                Math.sin(dLon / 2) * Math.sin(dLon / 2);
         double c = 2 * Math.atan2(Math.sqrt(a), Math.sqrt(1 - a));
         return radioTierra * c;
     }

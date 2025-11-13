@@ -74,4 +74,13 @@ public class UsuarioService {
         return usuarioRepository.findAll();
     }
 
+    public Usuario actualizarMostrarUbicacion(String usuarioId, boolean mostrar) {
+    Usuario usuario = usuarioRepository.findById(usuarioId)
+        .orElseThrow(() -> new RuntimeException("Usuario no encontrado"));
+    
+    usuario.setMostrarUbicacion(mostrar);
+    return usuarioRepository.save(usuario);
+    }   
+
+
 }
